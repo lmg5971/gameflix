@@ -6,8 +6,8 @@ This project uses GitHub Actions to automatically build and test the Spring Boot
 
 The workflow is defined in `.github/workflows/ci.yml`. It starts when:
 
-- Code is pushed to the `master` branch.
-- A pull request targets the `master` branch.
+- Code is pushed to the `main` branch.
+- A pull request targets the `main` branch.
 
 ## Workflow steps
 
