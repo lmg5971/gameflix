@@ -1,0 +1,14 @@
+.git/
+.github/
+.idea/
+.junie/
+.run/
+docs/
+target/
+.env
+.env.*
+*.iml
+*.log
+Dockerfile*
+compose*.yaml
+compose*.yml

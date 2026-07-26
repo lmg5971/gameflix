@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<!--
+  Shared GameFlix layout fragments.
+
+  These reusable fragments centralize the head asset links, the branded navbar,
+  the footer, and the script includes so that every page inherits the same
+  Netflix-inspired base theme and chrome. Pages provide their own <main> content
+  and pass page-specific navbar actions into the navbar fragment.
+-->
+<head th:fragment="head(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle}">GameFlix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/gameflix-theme.css}" rel="stylesheet">
+</head>
+<body>
+<nav th:fragment="navbar(actions)" class="navbar navbar-expand-lg gameflix-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-controller-fill"></i>
+            GameFlix
+        </a>
+        <!-- Page-specific navbar actions are supplied by the calling template. -->
+        <th:block th:replace="${actions}"></th:block>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="gameflix-footer py-4 mt-5">
+    <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+        <span class="small">
+            <i class="bi bi-controller-fill text-primary"></i>
+            GameFlix &mdash; a video game subscription experience.
+        </span>
+    </div>
+</footer>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</th:block>
+</body>
+</html>

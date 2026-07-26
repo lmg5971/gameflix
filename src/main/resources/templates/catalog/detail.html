@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${game.title} + ' | GameFlix Catalog')}">
+    <meta charset="UTF-8">
+    <title>GameFlix Catalog Detail</title>
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar(~{:: #navActions})}">
+    <div id="navActions" class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-primary" href="/login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign in
+        </a>
+        <a class="btn btn-primary" href="/register">
+            <i class="bi bi-person-plus"></i>
+            Create account
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <nav class="mb-4">
+        <a class="link-primary text-decoration-none" th:href="@{/catalog}">
+            <i class="bi bi-arrow-left"></i>
+            Back to catalog
+        </a>
+    </nav>
+
+    <article class="card gameflix-card shadow-sm">
+        <div class="gameflix-poster gameflix-poster--detail card-img-top">
+            <img class="gameflix-poster__image"
+                 th:src="@{${game.thumbnailImagePath}}"
+                 th:alt="${game.title + ' catalog thumbnail'}"
+                 width="231"
+                 height="87"
+                 loading="eager"
+                 fetchpriority="high"
+                 decoding="async">
+            <span class="badge fs-6 gameflix-poster__badge" th:classappend="${game.availabilityStatus.badgeClass}"
+                  th:text="${game.availabilityStatus.label}">Available</span>
+        </div>
+        <div class="card-body p-4 p-lg-5">
+            <div class="d-flex flex-column flex-md-row align-items-md-start justify-content-between gap-3 mb-4">
+                <div>
+                    <p class="text-uppercase text-primary fw-semibold mb-2">Catalog detail</p>
+                    <h1 class="display-6 fw-bold mb-0" th:text="${game.title}">Game title</h1>
+                </div>
+                <span class="badge fs-6" th:classappend="${game.availabilityStatus.badgeClass}" th:text="${game.availabilityStatus.label}">
+                    Available
+                </span>
+            </div>
+
+            <dl class="row border-top border-bottom py-4 mb-4">
+                <dt class="col-sm-3">Genre</dt>
+                <dd class="col-sm-9" th:text="${game.genre}">Adventure</dd>
+                <dt class="col-sm-3">Platform</dt>
+                <dd class="col-sm-9" th:text="${game.platform}">PC</dd>
+                <dt class="col-sm-3">Maturity guidance</dt>
+                <dd class="col-sm-9" th:text="${game.maturityRating}">E</dd>
+                <dt class="col-sm-3">Availability status</dt>
+                <dd class="col-sm-9" th:text="${game.availabilityStatus.label}">Available</dd>
+            </dl>
+
+            <section class="mb-4">
+                <h2 id="description-heading" class="h4">Description</h2>
+                <p class="lead" th:text="${game.description}">
+                    Detailed catalog description.
+                </p>
+            </section>
+
+            <section>
+                <h2 id="play-heading" class="visually-hidden">Play this game</h2>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <!-- Guests cannot launch games; the locked button signals a sign-in requirement. -->
+                    <span class="d-inline-block" tabindex="0"
+                          data-bs-toggle="tooltip" data-bs-placement="top"
+                          data-bs-title="Sign in to your GameFlix account to play this game.">
+                        <button class="btn btn-primary btn-lg gameflix-play-btn" type="button" disabled>
+                            <i class="bi bi-lock-fill"></i>
+                            Play Now
+                        </button>
+                    </span>
+                    <a class="btn btn-outline-light btn-lg" href="/login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Sign in to play
+                    </a>
+                </div>
+                <p class="text-body-secondary small mt-3 mb-0">
+                    <i class="bi bi-shield-lock"></i>
+                    You must be signed in to your GameFlix account to launch this game.
+                </p>
+            </section>
+        </div>
+    </article>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    // Enable Bootstrap tooltips so the locked "Play Now" control explains the sign-in requirement.
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        .forEach((element) => new bootstrap.Tooltip(element));
+</script>
+</body>
+</html>

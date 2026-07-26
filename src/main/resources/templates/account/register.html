@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Create Account | GameFlix')}">
+    <meta charset="UTF-8">
+    <title>Create Account | GameFlix</title>
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar(~{:: #navActions})}">
+    <div id="navActions" class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-primary" href="/login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign in
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-xl-6">
+            <header class="mb-4">
+                <p class="text-uppercase text-primary fw-semibold mb-2">Account access</p>
+                <h1 class="display-6 fw-bold">Create your GameFlix account</h1>
+            </header>
+
+            <div class="alert alert-success d-flex align-items-start gap-2" role="status" th:if="${param.success}">
+                <i class="bi bi-check-circle-fill"></i>
+                <div>Your account was created. You can now <a class="alert-link" href="/login">sign in</a>.</div>
+            </div>
+
+            <form class="card shadow-sm" method="post" th:action="@{/register}" th:object="${registrationForm}" novalidate>
+                <div class="card-body p-4">
+                    <div class="alert alert-danger d-flex align-items-start gap-2" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <div>
+                            <p class="mb-0" th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input class="form-control" id="username" type="text" autocomplete="username" th:field="*{username}"
+                               th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'">
+                        <div class="invalid-feedback" id="usernameError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Passphrase</label>
+                        <input class="form-control" id="password" type="password" autocomplete="new-password" th:field="*{password}"
+                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'">
+                        <div class="form-text" id="passwordHelp">Use a memorable passphrase between 11 and 72 characters.</div>
+                        <div class="invalid-feedback" id="passwordError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="passwordConfirmation">Confirm passphrase</label>
+                        <input class="form-control" id="passwordConfirmation" type="password" autocomplete="new-password" th:field="*{passwordConfirmation}"
+                               th:classappend="${#fields.hasErrors('passwordConfirmation')} ? 'is-invalid'">
+                        <div class="invalid-feedback" id="passwordConfirmationError" th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100" type="submit">
+                        <i class="bi bi-person-plus"></i>
+                        Create account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

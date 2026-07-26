@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('GameFlix')}">
+    <meta charset="UTF-8">
+    <title>GameFlix</title>
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar(~{:: #navActions})}">
+    <div id="navActions" class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-primary" href="/login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign in
+        </a>
+        <a class="btn btn-primary" href="/register">
+            <i class="bi bi-person-plus"></i>
+            Create account
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <section class="gameflix-hero p-5 mb-4 rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-4 fw-bold">Unlimited games. One subscription.</h1>
+            <p class="col-md-8 fs-4">
+                Discover a growing library of games, choose a subscription that fits how you play,
+                and start your next favorite title from one place.
+            </p>
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <a class="btn btn-primary btn-lg" href="/register">
+                    <i class="bi bi-person-plus"></i>
+                    Create account
+                </a>
+                <a class="btn btn-primary btn-lg" href="/login">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Sign in
+                </a>
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/catalog}">
+                    <i class="bi bi-controller"></i>
+                    Browse catalog
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

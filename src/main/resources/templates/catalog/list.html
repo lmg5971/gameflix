@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('GameFlix Catalog')}">
+    <meta charset="UTF-8">
+    <title>GameFlix Catalog</title>
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar(~{:: #navActions})}">
+    <div id="navActions" class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-primary" href="/login">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Sign in
+        </a>
+        <a class="btn btn-primary" href="/register">
+            <i class="bi bi-person-plus"></i>
+            Create account
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <nav class="mb-4">
+        <a class="link-primary text-decoration-none" href="/">
+            <i class="bi bi-arrow-left"></i>
+            Back to home
+        </a>
+    </nav>
+
+    <!-- Billboard hero: Netflix-style cinematic intro to the catalog. -->
+    <section class="gameflix-billboard rounded-4 p-4 p-lg-5 mb-5">
+        <p class="text-uppercase text-primary fw-semibold mb-2">
+            <i class="bi bi-collection-play-fill"></i>
+            Public catalog
+        </p>
+        <h1 id="billboard-heading" class="display-4 fw-bold mb-3">Stream the games you love</h1>
+        <p class="lead mb-4 gameflix-billboard__lead">
+            Browse the GameFlix library and launch instantly. One membership, unlimited play&mdash;no downloads,
+            no waiting. Sign in to start streaming your next favorite title.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-lg" href="/register">
+                <i class="bi bi-person-plus-fill"></i>
+                Join GameFlix
+            </a>
+            <a class="btn btn-outline-light btn-lg" href="/login">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Sign in to play
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
+            <h2 id="catalog-heading" class="h3 mb-0">
+                <i class="bi bi-grid-3x3-gap-fill text-primary me-2"></i>
+                Browse titles
+            </h2>
+            <span class="badge text-bg-light fs-6" th:text="${#lists.size(games)} + ' titles'">0 titles</span>
+        </div>
+
+        <div class="alert alert-info d-flex align-items-start gap-2" role="status" th:if="${#lists.isEmpty(games)}">
+            <i class="bi bi-info-circle"></i>
+            <div>
+                <strong>No public catalog titles are available yet.</strong>
+                Please check back after the GameFlix catalog has been seeded.
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" th:if="${!#lists.isEmpty(games)}">
+            <article class="col" th:each="game : ${games}">
+                <div class="card gameflix-card h-100 shadow-sm">
+                    <div class="gameflix-poster card-img-top">
+                        <img class="gameflix-poster__image"
+                             th:src="@{${game.thumbnailImagePath}}"
+                             th:alt="${game.title + ' catalog thumbnail'}"
+                             width="231"
+                             height="87"
+                             loading="lazy"
+                             decoding="async">
+                        <span class="badge gameflix-poster__badge" th:classappend="${game.availabilityStatus.badgeClass}"
+                              th:text="${game.availabilityStatus.label}">Available</span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5 fw-bold mb-2 gameflix-card__title" th:text="${game.title}">Game title</h3>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge gameflix-tag" th:text="${game.genre}">Adventure</span>
+                            <span class="badge gameflix-tag">
+                                <i class="bi bi-pc-display"></i>
+                                <span th:text="${game.platform}">PC</span>
+                            </span>
+                            <span class="badge gameflix-tag" th:text="${game.maturityRating}">E</span>
+                        </div>
+                        <p class="card-text text-body-secondary flex-grow-1"
+                           th:text="${#strings.abbreviate(game.description, 160)}">
+                            Catalog description summary.
+                        </p>
+                        <div class="d-grid gap-2 mt-auto">
+                            <!-- Guests cannot launch games; the locked button signals a sign-in requirement. -->
+                            <span class="d-inline-block w-100" tabindex="0"
+                                  data-bs-toggle="tooltip" data-bs-placement="top"
+                                  data-bs-title="Sign in to your GameFlix account to play this game.">
+                                <button class="btn btn-primary w-100 gameflix-play-btn" type="button" disabled>
+                                    <i class="bi bi-lock-fill"></i>
+                                    Play Now
+                                </button>
+                            </span>
+                            <a class="btn btn-outline-light w-100" th:href="@{/catalog/{id}(id=${game.id})}">
+                                <i class="bi bi-info-circle"></i>
+                                View details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    // Enable Bootstrap tooltips so locked "Play Now" controls explain the sign-in requirement.
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        .forEach((element) => new bootstrap.Tooltip(element));
+</script>
+</body>
+</html>

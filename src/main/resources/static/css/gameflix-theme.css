@@ -1,0 +1,329 @@
+/*
+ * GameFlix base theme.
+ *
+ * Establishes the Netflix-inspired base color palette, base style, and base
+ * theme for the GameFlix application. This file layers a dark, cinematic theme
+ * on top of Bootstrap 5.3.x by overriding the framework CSS variables and adding
+ * a small set of branded component classes. Keep all visual decisions here so
+ * templates can stay focused on rendering content.
+ */
+
+:root {
+    /* Base color palette (Netflix-inspired). */
+    --gameflix-black: #141414;
+    --gameflix-near-black: #0b0b0b;
+    --gameflix-surface: #1f1f1f;
+    --gameflix-surface-alt: #2a2a2a;
+    --gameflix-red: #e50914;
+    --gameflix-red-hover: #f6121d;
+    --gameflix-red-dark: #b20710;
+    --gameflix-text: #ffffff;
+    --gameflix-muted: #b3b3b3;
+    --gameflix-border: rgba(255, 255, 255, 0.12);
+
+    /* Brand typography scale used by hero and brand wordmarks. */
+    --gameflix-font-sans: "Helvetica Neue", Helvetica, Arial, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Map the GameFlix palette onto Bootstrap's dark theme tokens so that stock
+   Bootstrap components (buttons, cards, alerts, badges, forms) inherit the
+   GameFlix look without per-component overrides. */
+[data-bs-theme="dark"] {
+    --bs-primary: var(--gameflix-red);
+    --bs-primary-rgb: 229, 9, 20;
+
+    --bs-body-bg: var(--gameflix-black);
+    --bs-body-color: var(--gameflix-text);
+    --bs-body-font-family: var(--gameflix-font-sans);
+
+    --bs-secondary-color: var(--gameflix-muted);
+    --bs-secondary-bg: var(--gameflix-surface);
+    --bs-tertiary-bg: var(--gameflix-surface-alt);
+
+    --bs-border-color: var(--gameflix-border);
+
+    --bs-link-color: #ffffff;
+    --bs-link-color-rgb: 255, 255, 255;
+    --bs-link-hover-color: var(--gameflix-red);
+    --bs-link-hover-color-rgb: 229, 9, 20;
+
+    --bs-emphasis-color: #ffffff;
+    --bs-heading-color: #ffffff;
+}
+
+body {
+    background-color: var(--gameflix-black);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Branded primary buttons keep the Netflix red regardless of Bootstrap state
+   colors and add a subtle hover lift for an interactive feel. */
+.btn-primary {
+    --bs-btn-bg: var(--gameflix-red);
+    --bs-btn-border-color: var(--gameflix-red);
+    --bs-btn-hover-bg: var(--gameflix-red-hover);
+    --bs-btn-hover-border-color: var(--gameflix-red-hover);
+    --bs-btn-active-bg: var(--gameflix-red-dark);
+    --bs-btn-active-border-color: var(--gameflix-red-dark);
+    --bs-btn-disabled-bg: var(--gameflix-red);
+    --bs-btn-disabled-border-color: var(--gameflix-red);
+    --bs-btn-color: #ffffff;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-disabled-color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #ffffff;
+    --bs-btn-border-color: var(--gameflix-red);
+    --bs-btn-hover-bg: var(--gameflix-red);
+    --bs-btn-hover-border-color: var(--gameflix-red);
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-bg: var(--gameflix-red-dark);
+    --bs-btn-active-border-color: var(--gameflix-red-dark);
+    font-weight: 600;
+}
+
+/* Text helpers used across templates. */
+.text-primary {
+    color: var(--gameflix-red) !important;
+}
+
+.link-primary {
+    color: #ffffff !important;
+}
+
+.link-primary:hover,
+.link-primary:focus {
+    color: var(--gameflix-red) !important;
+}
+
+/* Navbar: solid near-black bar with a bold red wordmark, echoing Netflix. */
+.gameflix-navbar {
+    background-color: var(--gameflix-near-black);
+    border-bottom: 1px solid var(--gameflix-border);
+}
+
+.gameflix-navbar .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gameflix-red);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gameflix-navbar .navbar-brand:hover,
+.gameflix-navbar .navbar-brand:focus {
+    color: var(--gameflix-red-hover);
+}
+
+/* Hero / billboard sections use a darkened gradient backdrop for depth. */
+.gameflix-hero {
+    background: linear-gradient(120deg, var(--gameflix-near-black) 0%, var(--gameflix-surface) 100%);
+    border: 1px solid var(--gameflix-border);
+    color: var(--gameflix-text);
+}
+
+.gameflix-hero .lead,
+.gameflix-hero p {
+    color: var(--gameflix-muted);
+}
+
+/* Surfaces: cards and tertiary panels share a consistent dark elevation. */
+.card {
+    --bs-card-bg: var(--gameflix-surface);
+    --bs-card-border-color: var(--gameflix-border);
+    --bs-card-color: var(--gameflix-text);
+}
+
+.bg-body-tertiary {
+    background-color: var(--gameflix-surface) !important;
+}
+
+/* Catalog cards lift toward the viewer on hover, mirroring streaming UIs. */
+.gameflix-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    overflow: hidden;
+}
+
+.gameflix-card:hover,
+.gameflix-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.6);
+}
+
+/*
+ * Catalog thumbnail artwork.
+ *
+ * Catalog records render their 231x87 JPEG thumbnails from the static catalog
+ * image folder. The wrapper preserves a consistent aspect ratio while letting
+ * the real artwork fill the card width responsively.
+ */
+.gameflix-poster {
+    position: relative;
+    display: block;
+    aspect-ratio: 231 / 87;
+    overflow: hidden;
+    color: var(--gameflix-text);
+    background-color: var(--gameflix-near-black);
+}
+
+.gameflix-poster__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Availability badge floats over the top-right of the artwork. */
+.gameflix-poster__badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
+}
+
+.gameflix-poster__image {
+    transition: transform 0.25s ease;
+}
+
+.gameflix-card:hover .gameflix-poster__image,
+.gameflix-card:focus-within .gameflix-poster__image {
+    transform: scale(1.06);
+}
+
+/* Larger thumbnail presentation used on the catalog detail page. */
+.gameflix-poster--detail {
+    border-radius: var(--bs-border-radius-lg, 0.5rem);
+}
+
+/* Form controls on dark surfaces. */
+[data-bs-theme="dark"] .form-control {
+    background-color: var(--gameflix-surface-alt);
+    border-color: var(--gameflix-border);
+    color: var(--gameflix-text);
+}
+
+[data-bs-theme="dark"] .form-control:focus {
+    background-color: var(--gameflix-surface-alt);
+    border-color: var(--gameflix-red);
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+    color: var(--gameflix-text);
+}
+
+/* Light badge helper used for counts should stay readable on dark surfaces. */
+.text-bg-light {
+    background-color: var(--gameflix-surface-alt) !important;
+    color: var(--gameflix-text) !important;
+}
+
+/* Footer pinned to the bottom of the viewport on short pages. */
+.gameflix-footer {
+    flex-shrink: 0;
+    background-color: var(--gameflix-near-black);
+    border-top: 1px solid var(--gameflix-border);
+    color: var(--gameflix-muted);
+}
+
+.gameflix-footer a {
+    color: var(--gameflix-muted);
+    text-decoration: none;
+}
+
+.gameflix-footer a:hover,
+.gameflix-footer a:focus {
+    color: var(--gameflix-red);
+}
+
+
+/*
+ * Catalog billboard.
+ *
+ * A Netflix-style hero banner that introduces the public catalog with a
+ * cinematic dark gradient, a subtle red glow, and a faint artwork texture.
+ */
+.gameflix-billboard {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(229, 9, 20, 0.35) 0%, transparent 42%),
+        linear-gradient(125deg, var(--gameflix-near-black) 0%, var(--gameflix-surface) 55%, var(--gameflix-surface-alt) 100%);
+    border: 1px solid var(--gameflix-border);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.55);
+}
+
+.gameflix-billboard::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(20, 20, 20, 0.85) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.gameflix-billboard > * {
+    position: relative;
+    z-index: 1;
+}
+
+.gameflix-billboard__lead {
+    color: var(--gameflix-muted);
+    max-width: 48rem;
+}
+
+/* Steam-inspired metadata tags for genre, platform, and maturity rating. */
+.gameflix-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: var(--gameflix-surface-alt);
+    color: var(--gameflix-muted);
+    border: 1px solid var(--gameflix-border);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.gameflix-card__title {
+    color: var(--gameflix-text);
+}
+
+/*
+ * Locked "Play Now" call to action.
+ *
+ * Guests browsing the public catalog see the streaming-style primary button,
+ * but it is disabled and shows a lock icon plus a sign-in tooltip until the
+ * visitor authenticates.
+ */
+.gameflix-play-btn {
+    letter-spacing: 0.02em;
+}
+
+.gameflix-play-btn:disabled,
+.gameflix-play-btn[aria-disabled="true"] {
+    --bs-btn-disabled-bg: var(--gameflix-red-dark);
+    --bs-btn-disabled-border-color: var(--gameflix-red-dark);
+    --bs-btn-disabled-opacity: 0.85;
+    cursor: not-allowed;
+}
+
+/* Outline-light buttons act as the secondary catalog action on dark surfaces. */
+.btn-outline-light {
+    --bs-btn-color: var(--gameflix-text);
+    --bs-btn-border-color: var(--gameflix-border);
+    --bs-btn-hover-bg: var(--gameflix-surface-alt);
+    --bs-btn-hover-border-color: var(--gameflix-text);
+    --bs-btn-hover-color: var(--gameflix-text);
+    --bs-btn-active-bg: var(--gameflix-surface-alt);
+    --bs-btn-active-border-color: var(--gameflix-text);
+    --bs-btn-active-color: var(--gameflix-text);
+    font-weight: 600;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sign In | GameFlix')}">
+    <meta charset="UTF-8">
+    <title>Sign In | GameFlix</title>
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar(~{:: #navActions})}">
+    <div id="navActions" class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-primary" href="/register">
+            <i class="bi bi-person-plus"></i>
+            Create account
+        </a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-xl-5">
+            <header class="mb-4">
+                <p class="text-uppercase text-primary fw-semibold mb-2">Account access</p>
+                <h1 class="display-6 fw-bold">Sign in to GameFlix</h1>
+            </header>
+
+            <div class="alert alert-danger d-flex align-items-start gap-2" role="alert" th:if="${param.error}">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <div>Invalid username or password. Please try again.</div>
+            </div>
+
+            <div class="alert alert-success d-flex align-items-start gap-2" role="status" th:if="${param.logout}">
+                <i class="bi bi-check-circle-fill"></i>
+                <div>You have been signed out. Protected account pages now require login again.</div>
+            </div>
+
+            <form class="card shadow-sm" method="post" th:action="@{/login}">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input class="form-control" id="username" name="username" type="text" autocomplete="username" required autofocus>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="password">Passphrase</label>
+                        <input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100" type="submit">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Sign in
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
