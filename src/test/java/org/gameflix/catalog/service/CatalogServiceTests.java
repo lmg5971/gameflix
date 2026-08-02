@@ -34,20 +34,29 @@ class CatalogServiceTests {
 
     @Test
     void getAllGames_ShouldReturnList() {
-        var savedGame = gameRepository.save(new Game("Catalog Quest", "Adventure", "PC", "E10+",
+        var savedGame1 = gameRepository.save(new Game("Test Game 1", "Adventure", "PC", "E10+",
                 "An active title returned by the games catalog service.", "/images/catalog/default.jpg",
+                GameAvailabilityStatus.AVAILABLE, true));
+        var savedGame2 = gameRepository.save(new Game("Test Game 2", "Adventure", "PC", "E10+",
+                "A second active title returned by the games catalog service.", "/images/catalog/default.jpg",
                 GameAvailabilityStatus.AVAILABLE, true));
 
         var games = catalogService.listPublicGames();
 
         assertThat(games)
-                .singleElement()
-                .satisfies(game -> {
-                    assertThat(game.getId()).isEqualTo(savedGame.getId());
-                    assertThat(game.getTitle()).isEqualTo("Catalog Quest");
-                    assertThat(game.getAvailabilityStatus()).isEqualTo(GameAvailabilityStatus.AVAILABLE);
-                    assertThat(game.isActive()).isTrue();
-                });
+                .satisfiesExactly(
+                        game -> {
+                            assertThat(game.getId()).isEqualTo(savedGame1.getId());
+                            assertThat(game.getTitle()).isEqualTo("Test Game 1");
+                            assertThat(game.getAvailabilityStatus()).isEqualTo(GameAvailabilityStatus.AVAILABLE);
+                            assertThat(game.isActive()).isTrue();
+                        },
+                        game -> {
+                            assertThat(game.getId()).isEqualTo(savedGame2.getId());
+                            assertThat(game.getTitle()).isEqualTo("Test Game 2");
+                            assertThat(game.getAvailabilityStatus()).isEqualTo(GameAvailabilityStatus.AVAILABLE);
+                            assertThat(game.isActive()).isTrue();
+                        });
     }
 
     @Test
