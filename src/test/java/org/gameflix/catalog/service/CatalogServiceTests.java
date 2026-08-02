@@ -13,15 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class CatalogServiceTests {
 
-    @Autowired
-    private CatalogService catalogService;
+    private final CatalogService catalogService;
+    private final GameRepository gameRepository;
 
     @Autowired
-    private GameRepository gameRepository;
+    CatalogServiceTests(CatalogService catalogService, GameRepository gameRepository) {
+        this.catalogService = catalogService;
+        this.gameRepository = gameRepository;
+    }
 
     @BeforeEach
     void deleteGames() {
         gameRepository.deleteAll();
+    }
+
+    @Test
+    void listPublicGamesReturnsEmptyListWhenCatalogIsEmpty() {
+        assertThat(catalogService.listPublicGames()).isEmpty();
     }
 
     @Test
