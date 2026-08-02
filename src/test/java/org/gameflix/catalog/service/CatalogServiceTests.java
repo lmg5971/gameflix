@@ -28,6 +28,29 @@ class CatalogServiceTests {
     }
 
     @Test
+    void testGetAllGames() {
+        assertThat(catalogService.listPublicGames()).isNotNull();
+    }
+
+    @Test
+    void getAllGames_ShouldReturnList() {
+        var savedGame = gameRepository.save(new Game("Catalog Quest", "Adventure", "PC", "E10+",
+                "An active title returned by the games catalog service.", "/images/catalog/default.jpg",
+                GameAvailabilityStatus.AVAILABLE, true));
+
+        var games = catalogService.listPublicGames();
+
+        assertThat(games)
+                .singleElement()
+                .satisfies(game -> {
+                    assertThat(game.getId()).isEqualTo(savedGame.getId());
+                    assertThat(game.getTitle()).isEqualTo("Catalog Quest");
+                    assertThat(game.getAvailabilityStatus()).isEqualTo(GameAvailabilityStatus.AVAILABLE);
+                    assertThat(game.isActive()).isTrue();
+                });
+    }
+
+    @Test
     void listPublicGamesReturnsEmptyListWhenCatalogIsEmpty() {
         assertThat(catalogService.listPublicGames()).isEmpty();
     }
